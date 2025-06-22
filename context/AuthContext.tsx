@@ -1,5 +1,11 @@
 "use client";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { supabase } from "@/lib/supabase";
 import { UserModel, Profile } from "@/lib/supabase/types";
 import { useRouter } from "next/navigation";
@@ -25,7 +31,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
+    setIsLoading(true);
     try {
       const {
         data: { session },
@@ -34,7 +41,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (error || !session) {
         setUser(null);
-        setIsLoading(false);
         return;
       }
 
@@ -50,29 +56,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
     } catch (error) {
       console.error("Error fetching user:", error);
-      setUser((prev) => prev);
+      setUser(null);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchUser();
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      // if (event === "SIGNED_IN" || event === "USER_UPDATED") {
-      //   await fetchUser();
-      // } else if (event === "SIGNED_OUT") {
-      //   setUser(null);
-      // }
-      await fetchUser();
-      setIsLoading(false);
+    } = supabase.auth.onAuthStateChange(async (event) => {
+      if (event === "SIGNED_IN" || event === "USER_UPDATED") {
+        await fetchUser();
+      } else if (event === "SIGNED_OUT") {
+        setUser(null);
+        setIsLoading(false);
+      }
     });
 
     return () => subscription.unsubscribe();
-  }, [user?.session]);
+  }, [fetchUser]);
 
   //
   //

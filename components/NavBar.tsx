@@ -34,7 +34,7 @@ export default function Navbar({ className = "" }) {
 
           {/* Buttons */}
           <div className="flex flex-row items-center  gap-3">
-            {!user && !isLoading ? (
+            {!user ? (
               <Button
                 className="blur_button_style"
                 onClick={() => {
@@ -44,13 +44,15 @@ export default function Navbar({ className = "" }) {
                 Login
               </Button>
             ) : (
-              <CustomAvatar
-                name={user?.profile?.name ?? "A"}
-                size="sm"
-                onTap={() => {
-                  router.push("/profile");
-                }}
-              />
+              !isLoading && (
+                <CustomAvatar
+                  name={user?.profile?.name ?? "A"}
+                  size="sm"
+                  onTap={() => {
+                    router.push("/profile");
+                  }}
+                />
+              )
             )}
           </div>
         </div>

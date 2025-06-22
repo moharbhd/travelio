@@ -14,12 +14,12 @@ export default function CheckAuthRoute({
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && !user?.session) {
+    if (!isLoading && !user) {
       router.push("/auth/login");
     }
-  }, []);
+  }, [isLoading, user, router]);
 
-  if (isLoading || !user?.session) {
+  if (isLoading || !user) {
     return <CustomLoadingPage />;
   }
 
