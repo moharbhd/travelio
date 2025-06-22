@@ -17,7 +17,7 @@ export default function CheckAuthRoute({
     if (!isLoading && !user?.session) {
       router.push("/auth/login");
     }
-  }, [isLoading, user?.session]);
+  }, []);
 
   if (isLoading || !user?.session) {
     return <CustomLoadingPage />;
