@@ -3,10 +3,11 @@ import { supabase } from "@lib/supabase";
 import { TripModel } from "../../../../types/trip";
 import { NextResponse } from "next/server";
 
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
+interface RouteParams {
+  params: { id: string };
+}
+
+export async function GET(request: Request, { params }: RouteParams) {
   try {
     const { id } = await params;
 
@@ -78,10 +79,7 @@ export async function GET(
 ///
 ///
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: Request, { params }: RouteParams) {
   try {
     const { id } = await params;
 
@@ -131,10 +129,7 @@ export async function DELETE(
 ///
 ///
 
-export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: Request, { params }: RouteParams) {
   try {
     const { id } = await params;
     const updateData = await request.json();
