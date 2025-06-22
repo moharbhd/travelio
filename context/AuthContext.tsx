@@ -62,11 +62,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === "SIGNED_IN" || event === "USER_UPDATED") {
-        await fetchUser();
-      } else if (event === "SIGNED_OUT") {
-        setUser(null);
-      }
+      // if (event === "SIGNED_IN" || event === "USER_UPDATED") {
+      //   await fetchUser();
+      // } else if (event === "SIGNED_OUT") {
+      //   setUser(null);
+      // }
+      await fetchUser();
       setIsLoading(false);
     });
 

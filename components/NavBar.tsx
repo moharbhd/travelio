@@ -44,15 +44,13 @@ export default function Navbar({ className = "" }) {
                 Login
               </Button>
             ) : (
-              !isLoading && (
-                <CustomAvatar
-                  name={user?.profile?.name ?? "A"}
-                  size="sm"
-                  onTap={() => {
-                    router.push("/profile");
-                  }}
-                />
-              )
+              <CustomAvatar
+                name={user?.profile?.name ?? "A"}
+                size="sm"
+                onTap={() => {
+                  router.push("/profile");
+                }}
+              />
             )}
           </div>
         </div>
